@@ -5,27 +5,37 @@ import { NO_ADDITIONAL_NODES_PRESET } from '../../src/options/presets/NoCustomNo
 (function () {
     const JavaScriptObfuscator: any = require('../../index');
 
-    let obfuscationResult = JavaScriptObfuscator.obfuscate(
+    let obfuscatedCode: string = JavaScriptObfuscator.obfuscate(
         `
-            console.log('foo');
-            console.log('bar');
-            console.log('bar');
+            class Test {
+                constructor () {
+                    let test = {}
+                }
+                
+                methodA = () => {
+                    console.log('methodA');
+                }
+                
+                methodB () {
+                    console.log('methodB');
+                    
+                    this.methodA();
+                }
+            }
+            
+            const instance = new Test();
+            
+            instance.methodA();
+            instance.methodB();
         `,
         {
             ...NO_ADDITIONAL_NODES_PRESET,
             compact: false,
-            simplify: false,
             stringArray: true,
-            stringArrayThreshold: 1,
-            stringArrayEncoding: ['base64'],
-            identifierNamesGenerator: 'mangled'
+            stringArrayThreshold: 1
         }
-    );
-
-    let obfuscatedCode: string = obfuscationResult.getObfuscatedCode();
-    let identifierNamesCache = obfuscationResult.getIdentifierNamesCache();
+    ).getObfuscatedCode();
 
     console.log(obfuscatedCode);
     console.log(eval(obfuscatedCode));
-    console.log(identifierNamesCache);
 })();

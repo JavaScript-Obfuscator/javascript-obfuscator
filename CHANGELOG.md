@@ -1,5 +1,9 @@
 Change Log
 
+v2.16.0
+---
+* Added support of `es2022` features: private identifiers and class properties
+
 v2.15.5
 ---
 * Improved `stringArray` calls wrapper decode code
